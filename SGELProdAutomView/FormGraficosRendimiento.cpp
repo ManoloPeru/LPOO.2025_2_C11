@@ -1,0 +1,2 @@
+#include "FormGraficosRendimiento.h"
+
