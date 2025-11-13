@@ -5,11 +5,11 @@ Type VARCHAR(50),
 State VARCHAR(50),
 Location VARCHAR(100)
 );
--- Insertar m醧uinas de ejemplo
-INSERT INTO Machine VALUES (1, 'Brazo Rob髏ico 1', 'Rob髏ico', 'Operativa', 'Zona A-1');
-INSERT INTO Machine VALUES (2, 'Sensor de Visi髇 A2', 'Sensorial', 'En Mantenimiento', 'Zona B-
+-- Insertar m谩quinas de ejemplo
+INSERT INTO Machine VALUES (1, 'Brazo Rob贸tico 1', 'Rob贸tico', 'Operativa', 'Zona A-1');
+INSERT INTO Machine VALUES (2, 'Sensor de Visi贸n A2', 'Sensorial', 'En Mantenimiento', 'Zona B-
 3');
-INSERT INTO Machine VALUES (3, 'Actuador Hidr醬lico X', 'Actuador', 'Operativa', 'Zona C-2');
+INSERT INTO Machine VALUES (3, 'Actuador Hidr谩ulico X', 'Actuador', 'Operativa', 'Zona C-2');
 
 CREATE TABLE Maintenance (
     MaintenanceId INT IDENTITY(1,1) PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE Maintenance (
 );
 GO
 
--- PROCEDIMIENTO PARA INSERTAR UNA M罳UINA
+-- PROCEDIMIENTO PARA INSERTAR UNA M脕QUINA
 CREATE PROCEDURE usp_AddMachine
 @MachineId INT,
 @Name NVARCHAR(100),
@@ -35,14 +35,14 @@ INSERT INTO Machine (MachineId, Name, Type, State, Location)
 VALUES (@MachineId, @Name, @Type, @State, @Location);
 END;
 GO
--- PROCEDIMIENTO PARA CONSULTAR TODAS LAS M罳UINAS
+-- PROCEDIMIENTO PARA CONSULTAR TODAS LAS M脕QUINAS
 CREATE PROCEDURE usp_QueryAllMachines
 AS
 BEGIN
 SELECT * FROM Machine;
 END;
 GO
--- PROCEDIMIENTO PARA ACTUALIZAR DATOS DE UNA M罳UINA
+-- PROCEDIMIENTO PARA ACTUALIZAR DATOS DE UNA M脕QUINA
 CREATE PROCEDURE usp_UpdateMachine
 @MachineId INT,
 @Name NVARCHAR(100),
@@ -56,7 +56,7 @@ SET Name = @Name, Type = @Type, State = @State, Location = @Location
 WHERE MachineId = @MachineId;
 END;
 GO
--- PROCEDIMIENTO PARA ELIMINAR UNA M罳UINA
+-- PROCEDIMIENTO PARA ELIMINAR UNA M脕QUINA
 CREATE PROCEDURE usp_DeleteMachine
 @MachineId INT
 AS
@@ -65,9 +65,9 @@ DELETE FROM Machine WHERE MachineId = @MachineId;
 END;
 GO
 -- DATOS DE EJEMPLO
-EXEC usp_AddMachine 11, 'Brazo Rob髏ico 1', 'Rob髏ico', 'Operativa', 'Zona A-1';
-EXEC usp_AddMachine 12, 'Sensor de Visi髇 A2', 'Sensorial', 'En Mantenimiento', 'Zona B-3';
-EXEC usp_AddMachine 13, 'Actuador Hidr醬lico X', 'Actuador', 'Operativa', 'Zona C-2';
+EXEC usp_AddMachine 11, 'Brazo Rob贸tico 1', 'Rob贸tico', 'Operativa', 'Zona A-1';
+EXEC usp_AddMachine 12, 'Sensor de Visi贸n A2', 'Sensorial', 'En Mantenimiento', 'Zona B-3';
+EXEC usp_AddMachine 13, 'Actuador Hidr谩ulico X', 'Actuador', 'Operativa', 'Zona C-2';
 
 CREATE PROCEDURE usp_AddMaintenance
     @MachineId INT,
