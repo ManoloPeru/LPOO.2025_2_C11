@@ -28,5 +28,10 @@ namespace SGELProdAutomController {
         
         //Para los archivos BIN
         void escribirArchivoBIN();
+
+		//Metodos para procedimientos almacenados
+        bool spAgregarMaquina(Maquina^ maquina);
+        bool spModificarMaquina(int id, String^ nombre, String^ rol, String^ turno, String^ ubicacion);
+        bool spEliminarMaquina(int id);
     };
 }

@@ -138,7 +138,7 @@ namespace SGELProdAutomView {
 			this->dtpFecha->Location = System::Drawing::Point(139, 156);
 			this->dtpFecha->Name = L"dtpFecha";
 			this->dtpFecha->Size = System::Drawing::Size(150, 28);
-			this->dtpFecha->TabIndex = 9;
+			this->dtpFecha->TabIndex = 2;
 			// 
 			// label2
 			// 
@@ -160,7 +160,7 @@ namespace SGELProdAutomView {
 			this->txtDescripcion->Multiline = true;
 			this->txtDescripcion->Name = L"txtDescripcion";
 			this->txtDescripcion->Size = System::Drawing::Size(403, 65);
-			this->txtDescripcion->TabIndex = 5;
+			this->txtDescripcion->TabIndex = 4;
 			// 
 			// txtEstado
 			// 
@@ -171,7 +171,7 @@ namespace SGELProdAutomView {
 			this->txtEstado->MaxLength = 10;
 			this->txtEstado->Name = L"txtEstado";
 			this->txtEstado->Size = System::Drawing::Size(150, 28);
-			this->txtEstado->TabIndex = 4;
+			this->txtEstado->TabIndex = 3;
 			// 
 			// txtTipo
 			// 
@@ -182,7 +182,7 @@ namespace SGELProdAutomView {
 			this->txtTipo->MaxLength = 20;
 			this->txtTipo->Name = L"txtTipo";
 			this->txtTipo->Size = System::Drawing::Size(403, 28);
-			this->txtTipo->TabIndex = 3;
+			this->txtTipo->TabIndex = 1;
 			// 
 			// txtCosto
 			// 
@@ -192,7 +192,7 @@ namespace SGELProdAutomView {
 			this->txtCosto->Margin = System::Windows::Forms::Padding(5);
 			this->txtCosto->Name = L"txtCosto";
 			this->txtCosto->Size = System::Drawing::Size(150, 28);
-			this->txtCosto->TabIndex = 2;
+			this->txtCosto->TabIndex = 5;
 			this->txtCosto->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->txtCosto->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &frmNuevoMantenimiento::txtCosto_KeyPress);
 			// 
@@ -256,7 +256,7 @@ namespace SGELProdAutomView {
 			this->btnGrabar->Margin = System::Windows::Forms::Padding(5);
 			this->btnGrabar->Name = L"btnGrabar";
 			this->btnGrabar->Size = System::Drawing::Size(173, 56);
-			this->btnGrabar->TabIndex = 15;
+			this->btnGrabar->TabIndex = 6;
 			this->btnGrabar->Text = L"Grabar";
 			this->btnGrabar->UseVisualStyleBackColor = false;
 			this->btnGrabar->Click += gcnew System::EventHandler(this, &frmNuevoMantenimiento::btnGrabar_Click);
@@ -271,7 +271,7 @@ namespace SGELProdAutomView {
 			this->btnCancelar->Margin = System::Windows::Forms::Padding(5);
 			this->btnCancelar->Name = L"btnCancelar";
 			this->btnCancelar->Size = System::Drawing::Size(173, 56);
-			this->btnCancelar->TabIndex = 16;
+			this->btnCancelar->TabIndex = 7;
 			this->btnCancelar->Text = L"Cancelar";
 			this->btnCancelar->UseVisualStyleBackColor = false;
 			this->btnCancelar->Click += gcnew System::EventHandler(this, &frmNuevoMantenimiento::btnCancelar_Click);

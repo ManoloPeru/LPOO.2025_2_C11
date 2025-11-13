@@ -19,5 +19,7 @@ namespace SGELProdAutomController {
 		bool ModificarMantenimiento(int id, Maquina^ maquina, String^ tipo, String^ fecha, String^ estado, String^ descripcion, Decimal costo);
 		bool EliminarMantenimiento(int id);
 		void CloseMantenimiento();
+
+		bool spAgregarMantenimiento(Mantenimiento^ mantenimiento);
 	};	
 }

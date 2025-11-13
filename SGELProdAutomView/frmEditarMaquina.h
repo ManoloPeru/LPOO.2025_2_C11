@@ -280,7 +280,11 @@ private: System::Void btnGrabar_Click(System::Object^ sender, System::EventArgs^
 	String^ turno = this->txtEstado->Text;
 	String^ ubicacion = this->txtUbicacion->Text;
 	// Llamando al controlador para actualizar el operador en la base de datos
-	this->maquinaController->ModificarMaquina(idMaquina, nombre, rol, turno, ubicacion);
+	//this->maquinaController->ModificarMaquina(idMaquina, nombre, rol, turno, ubicacion);
+	
+	// Llamando al procedimiento almacenado para modificar la Maquina
+	this->maquinaController->spModificarMaquina(idMaquina, nombre, rol, turno, ubicacion);
+
 	MessageBox::Show("La información de la Maquina se actualizó correctamente.", "Éxito", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	this->Close(); // Cierra el formulario actual
 }

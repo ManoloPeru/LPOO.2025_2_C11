@@ -138,3 +138,33 @@ bool MantenimientoController::EliminarMantenimiento(int id) {
 void MantenimientoController::CloseMantenimiento() {
 	this->cerrarConexion();
 }
+
+bool MantenimientoController::spAgregarMantenimiento(Mantenimiento^ mantenimiento) {
+	try {
+		// Crear parámetros para el procedimiento almacenado
+		array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
+			gcnew SqlParameter("@MachineId", mantenimiento->getMaquina()->getIdMaquina()),
+				gcnew SqlParameter("@Type", mantenimiento->getTipo()),
+				gcnew SqlParameter("@Date", mantenimiento->getFecha()),
+				gcnew SqlParameter("@State", mantenimiento->getEstado()),
+				gcnew SqlParameter("@Description", mantenimiento->getDescripcion()),
+				gcnew SqlParameter("@Cost", mantenimiento->getCosto())
+		};
+
+		// Ejecutar procedimiento almacenado y obtener ID generado
+		int idMantenimiento = executeStoredProcedureScalar("usp_AddMaintenance", parameters);
+
+		if (idMantenimiento > 0) {
+			mantenimiento->setIdMantenimiento(idMantenimiento);
+			this->listaMantenimientos->Add(mantenimiento);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	catch (Exception^ ex) {
+		Console::WriteLine("Error al AgregarMantenimiento: " + ex->Message);
+		return false;
+	}
+}

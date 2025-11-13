@@ -57,6 +57,7 @@ MaquinaController::MaquinaController() {
     }
 	*/
 
+    /*
 	//BD: Leer desde la base de datos y cargar los datos en la lista
 	try {
         // Paso1: Establecer la conexion
@@ -88,6 +89,33 @@ MaquinaController::MaquinaController() {
         // En caso de cualquier error, crear lista vacía
         this->listaMaquinas = gcnew List<Maquina^>();
 	}
+    */
+
+	//BD con procedimiento almacenado: Leer desde la base de datos y cargar los datos en la lista
+    try {
+		// Paso1: Establecer la conexion
+		SqlDataReader^ objData = executeStoredProcedureReader("usp_QueryAllMachines", nullptr); //Nombre del procedimiento almacenado y parámetros
+		// Paso2: Leer los registros de la tabla
+        if (objData != nullptr) {
+            while (objData->Read()) {
+				// Usamos el índice o el nombre de la columna para obtener los valores
+                int id = safe_cast<int>(objData["MachineId"]); 
+                String^ nombre = safe_cast<String^>(objData["Name"]);
+                String^ tipo = safe_cast<String^>(objData["Type"]);
+                String^ estado = safe_cast<String^>(objData["State"]);
+                String^ ubicacion = safe_cast<String^>(objData["Location"]);
+				// Crear el objeto Maquina y agregarlo a la lista
+                Maquina^ maquina = gcnew Maquina(id, nombre, tipo, estado, ubicacion);
+                this->listaMaquinas->Add(maquina);
+            }
+            objData->Close();
+        }
+        cerrarConexion();
+    }
+    catch (Exception^ ex) {
+        Console::WriteLine("Error al cargar máquinas: " + ex->Message);
+        this->listaMaquinas = gcnew List<Maquina^>();
+    }
 }
 
 List<Maquina^>^ MaquinaController::ObtenerTodosMaquinas() {
@@ -99,6 +127,7 @@ bool MaquinaController::AgregarMaquina(Maquina^ maquina) {
         this->listaMaquinas->Add(maquina);
         //escribirArchivo();
         //escribirArchivoBIN();
+
 		// Preparamos el SQL para Insertar en la Base de Datos
         String^ sSql = "INSERT INTO Machine (MachineId, Name, Type, State, Location) ";
 		sSql += " VALUES(" + maquina->getIdMaquina() + ", "; // Suponiendo que MachineId es de tipo INT
@@ -106,12 +135,14 @@ bool MaquinaController::AgregarMaquina(Maquina^ maquina) {
 		sSql += " '" + maquina->getTipo() + "', ";  // Suponiendo que Type es de tipo VARCHAR
 		sSql += " '" + maquina->getEstado() + "', "; // Suponiendo que State es de tipo VARCHAR
 		sSql += " '" + maquina->getUbicacion() + "')"; // Suponiendo que Location es de tipo VARCHAR
-        int idMaquina = insertSql(sSql);
+        int idMaquina = executeSql(sSql);
 		if (idMaquina > 0)
             return true;
         else
 			return false;
+        
     }
+    return false; // Si ya existe la máquina
 }
 
 bool MaquinaController::ExisteMaquina(int id) {
@@ -197,4 +228,74 @@ void MaquinaController::escribirArchivoBIN() {
     BinaryFormatter^ formateador = gcnew BinaryFormatter();
     formateador->Serialize(stream, this->listaMaquinas);
     stream->Close();
+}
+
+// Método para ejecutar el procedimiento almacenado de agregar máquina
+bool MaquinaController::spAgregarMaquina(Maquina^ maquina) {
+    if (!ExisteMaquina(maquina->getIdMaquina())) {
+        this->listaMaquinas->Add(maquina);
+
+		// Asignando los valores a cada atributo de la tabla Machine
+        array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
+            gcnew SqlParameter("@MachineId", maquina->getIdMaquina()),
+                gcnew SqlParameter("@Name", maquina->getNombre()),
+                gcnew SqlParameter("@Type", maquina->getTipo()),
+                gcnew SqlParameter("@State", maquina->getEstado()),
+                gcnew SqlParameter("@Location", maquina->getUbicacion())
+        };
+		// Llamar al procedimiento almacenado
+        bool resultado = executeStoredProcedure("usp_AddMachine", parameters);
+		// Verificar el resultado
+        if (resultado) {
+            return true;
+        }
+        else {
+            this->listaMaquinas->Remove(maquina);
+            return false;
+        }
+    }
+    return false;
+}
+
+// Método para ejecutar el procedimiento almacenado de modificar máquina
+bool MaquinaController::spModificarMaquina(int id, String^ nombre, String^ rol, String^ turno, String^ ubicacion) {
+    Maquina^ maquina = ConsultarMaquinaPorId(id);
+	// Actualizar los valores en el objeto Maquina
+    if (maquina != nullptr) {
+        maquina->setNombre(nombre);
+        maquina->setTipo(rol);
+        maquina->setEstado(turno);
+        maquina->setUbicacion(ubicacion);
+
+        // Crear parámetros para el procedimiento almacenado
+        array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
+            gcnew SqlParameter("@MachineId", id),
+                gcnew SqlParameter("@Name", nombre),
+                gcnew SqlParameter("@Type", rol),
+                gcnew SqlParameter("@State", turno),
+                gcnew SqlParameter("@Location", ubicacion)
+        };
+		// Llamar al procedimiento almacenado
+        bool resultado = executeStoredProcedure("usp_UpdateMachine", parameters);
+
+        return resultado;
+    }
+    return false;
+}
+
+bool MaquinaController::spEliminarMaquina(int id) {
+    Maquina^ maquina = ConsultarMaquinaPorId(id);
+    if (maquina != nullptr) {
+        this->listaMaquinas->Remove(maquina);
+
+        // Crear parámetro para el procedimiento almacenado
+        array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
+            gcnew SqlParameter("@MachineId", id)
+        };
+		// Llamar al procedimiento almacenado
+        bool resultado = executeStoredProcedure("usp_DeleteMachine", parameters);
+
+        return resultado;
+    }
+    return false;
 }
