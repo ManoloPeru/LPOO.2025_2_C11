@@ -57,7 +57,7 @@ MaquinaController::MaquinaController() {
     }
 	*/
 
-    /*
+    /**/
 	//BD: Leer desde la base de datos y cargar los datos en la lista
 	try {
         // Paso1: Establecer la conexion
@@ -89,9 +89,10 @@ MaquinaController::MaquinaController() {
         // En caso de cualquier error, crear lista vacía
         this->listaMaquinas = gcnew List<Maquina^>();
 	}
-    */
+    /**/
 
-	//BD con procedimiento almacenado: Leer desde la base de datos y cargar los datos en la lista
+	/*
+    //BD con procedimiento almacenado: Leer desde la base de datos y cargar los datos en la lista
     try {
 		// Paso1: Establecer la conexion
 		SqlDataReader^ objData = executeStoredProcedureReader("usp_QueryAllMachines", nullptr); //Nombre del procedimiento almacenado y parámetros
@@ -116,6 +117,7 @@ MaquinaController::MaquinaController() {
         Console::WriteLine("Error al cargar máquinas: " + ex->Message);
         this->listaMaquinas = gcnew List<Maquina^>();
     }
+    */
 }
 
 List<Maquina^>^ MaquinaController::ObtenerTodosMaquinas() {

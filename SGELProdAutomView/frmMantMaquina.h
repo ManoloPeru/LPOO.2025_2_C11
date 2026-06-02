@@ -399,10 +399,10 @@ private: System::Void btnEliminar_Click(System::Object^ sender, System::EventArg
 		int selectedRowIndex = this->dgvLista->SelectedRows[0]->Index;
 		int idMaquina = Convert::ToInt32(this->dgvLista->Rows[selectedRowIndex]->Cells[0]->Value);
 		// Crear una instancia del controlador y eliminar la Maquina por id
-		//this->maquinaController->EliminarMaquina(idMaquina);
+		this->maquinaController->EliminarMaquina(idMaquina);
 		
 		// Llamar al procedimiento almacenado para eliminar la Maquina
-		this->maquinaController->spEliminarMaquina(idMaquina);
+		//this->maquinaController->spEliminarMaquina(idMaquina);
 
 		MessageBox::Show("La Maquina se elimino correctamente.", "Éxito", MessageBoxButtons::OK, MessageBoxIcon::Information);
 

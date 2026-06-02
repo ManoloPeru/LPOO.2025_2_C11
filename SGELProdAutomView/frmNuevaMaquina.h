@@ -279,10 +279,10 @@ private: System::Void btnGrabar_Click(System::Object^ sender, System::EventArgs^
 	Maquina^ nuevaMaquina = gcnew Maquina(idMaquina, nombre, tipo, estado, ubicacion);
 	
 	// Agregar el nuevo maquina al controlador empleando INSERT en la base de datos
-	//this->maquinaController->AgregarMaquina(nuevaMaquina);
+	this->maquinaController->AgregarMaquina(nuevaMaquina);
 
 	// Usando el procedimiento almacenado para agregar la maquina
-	this->maquinaController->spAgregarMaquina(nuevaMaquina);
+	//this->maquinaController->spAgregarMaquina(nuevaMaquina);
 
 	MessageBox::Show("Maquina agregado exitosamente.", "Éxito", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	this->Close(); // Cierra el formulario actual

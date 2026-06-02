@@ -14,13 +14,14 @@ SqlConnection^ BaseController::getObjConexion() {
 void BaseController::abrirConexion() {
 	/*Paso 1, establecer la cadena de conexion*/
 	/*LOCAL*/
-	this->objConexion->ConnectionString = "Server=192.168.1.35;DataBase=lpoo_2025_2;User id=sa;Password=Passw0rd";
+	//this->objConexion->ConnectionString = "Server=localhost;DataBase=lpoo_2025_2;User id=sa;Password=Passw0rd";
 	
 	/*PUCP*/
 	//this->objConexion->ConnectionString = "Server={IP};DataBase={BD};User id={User};Password={PWD}";
+	//this->objConexion->ConnectionString = "Server=200.16.7.140;DataBase=mchavez;User id=mchavez;Password=12345678";
 	
 	/*AWS*/
-	//this->objConexion->ConnectionString = "Server=lpoo2024.c1uehfrpd23g.us-east-1.rds.amazonaws.com;DataBase=lpoo2024;User id=lpoo2024;Password=Passw0rd2024#";
+	this->objConexion->ConnectionString = "Server=bd1inf5306m2.c8o5unyqxzvb.us-east-1.rds.amazonaws.com;DataBase=BD1inf5306M2;User id=admin;Password=.lpoo20261";
 	
 	/*Paso 2, abrir la conexion*/
 	this->objConexion->Open();
