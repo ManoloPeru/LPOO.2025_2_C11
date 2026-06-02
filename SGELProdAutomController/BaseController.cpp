@@ -21,7 +21,7 @@ void BaseController::abrirConexion() {
 	//this->objConexion->ConnectionString = "Server=200.16.7.140;DataBase=mchavez;User id=mchavez;Password=12345678";
 	
 	/*AWS*/
-	this->objConexion->ConnectionString = "Server=bd1inf5306m2.c8o5unyqxzvb.us-east-1.rds.amazonaws.com;DataBase=BD1inf5306M2;User id=admin;Password=.lpoo20261";
+	this->objConexion->ConnectionString = "Server={PORT_LINK};DataBase={DB};User id={USR};Password={PWD}";
 	
 	/*Paso 2, abrir la conexion*/
 	this->objConexion->Open();
@@ -64,7 +64,7 @@ void BaseController::cerrarConexion() {
 // Metodo para ejecutar procedimientos almacenados que devuelven un SqlDataReader
 SqlDataReader^ BaseController::executeStoredProcedureReader(String^ procedureName, array<SqlParameter^>^ parameters) {
 	//procedureName: Nombre del procedimiento almacenado
-	//parameters: Arreglo de parámetros para el procedimiento almacenado
+	//parameters: Arreglo de parÃ¡metros para el procedimiento almacenado
 	try {
 		abrirConexion();
 		SqlCommand^ comando = gcnew SqlCommand(procedureName, this->getObjConexion());
@@ -77,7 +77,7 @@ SqlDataReader^ BaseController::executeStoredProcedureReader(String^ procedureNam
 		}
 
 		return comando->ExecuteReader();
-		// Nota: La conexión se cierra después de usar el DataReader
+		// Nota: La conexiÃ³n se cierra despuÃ©s de usar el DataReader
 	}
 	catch (Exception^ ex) {
 		Console::WriteLine("Error al ejecutar procedimiento almacenado: " + ex->Message);
@@ -89,13 +89,13 @@ SqlDataReader^ BaseController::executeStoredProcedureReader(String^ procedureNam
 // Metodo para ejecutar procedimientos almacenados que no devuelven resultados
 bool BaseController::executeStoredProcedure(String^ procedureName, array<SqlParameter^>^ parameters) {
 	//procedureName: Nombre del procedimiento almacenado
-	//parameters: Arreglo de parámetros para el procedimiento almacenado
+	//parameters: Arreglo de parÃ¡metros para el procedimiento almacenado
 	try {
 		abrirConexion();
 		SqlCommand^ comando = gcnew SqlCommand(procedureName, this->getObjConexion());
 		comando->CommandType = CommandType::StoredProcedure;
 
-		// Agregar parámetros si existen
+		// Agregar parÃ¡metros si existen
 		if (parameters != nullptr) {
 			for each (SqlParameter ^ param in parameters) {
 				comando->Parameters->Add(param);
