@@ -94,12 +94,15 @@ MaquinaController::MaquinaController() {
 	/*
     //BD con procedimiento almacenado: Leer desde la base de datos y cargar los datos en la lista
     try {
-		// Paso1: Establecer la conexion
-		SqlDataReader^ objData = executeStoredProcedureReader("usp_QueryAllMachines", nullptr); //Nombre del procedimiento almacenado y parámetros
-		// Paso2: Leer los registros de la tabla
+		// Paso1: ejecutar el procedimiento almacenado (SELECT) que me devuelve un SqlDataReader
+		SqlDataReader^ objData = executeStoredProcedureReader("usp_QueryAllMachines", nullptr); 
+		// Paso2: Validamos que el DataReader [objData] no sea nulo antes de intentar recuperar los datos
         if (objData != nullptr) {
+			// Paso3: Leer los registros del procedimiento almacenado
             while (objData->Read()) {
 				// Usamos el índice o el nombre de la columna para obtener los valores
+				// safe_cast<Tipo>(objData["NombreColumna"]) es una forma segura de convertir el valor al tipo esperado
+				// Tipo: int, String^, DateTime, etc. dependiendo del tipo de dato en la base de datos
                 int id = safe_cast<int>(objData["MachineId"]); 
                 String^ nombre = safe_cast<String^>(objData["Name"]);
                 String^ tipo = safe_cast<String^>(objData["Type"]);
@@ -232,12 +235,15 @@ void MaquinaController::escribirArchivoBIN() {
     stream->Close();
 }
 
-// Método para ejecutar el procedimiento almacenado de agregar máquina
+// Método para ejecutar el procedimiento almacenado de agregar un registro
 bool MaquinaController::spAgregarMaquina(Maquina^ maquina) {
     if (!ExisteMaquina(maquina->getIdMaquina())) {
         this->listaMaquinas->Add(maquina);
 
 		// Asignando los valores a cada atributo de la tabla Machine
+		// SqlParameter: Es una clase que representa un parámetro que se le pasa a un procedimiento almacenado. 
+        // Permite definir el nombre del parámetro, el tipo de dato y el valor que se le asignará al parámetro 
+        // en la ejecución del procedimiento almacenado.
         array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
             gcnew SqlParameter("@MachineId", maquina->getIdMaquina()),
                 gcnew SqlParameter("@Name", maquina->getNombre()),
@@ -245,7 +251,8 @@ bool MaquinaController::spAgregarMaquina(Maquina^ maquina) {
                 gcnew SqlParameter("@State", maquina->getEstado()),
                 gcnew SqlParameter("@Location", maquina->getUbicacion())
         };
-		// Llamar al procedimiento almacenado
+		// Llamar al procedimiento almacenado para insertar la máquina en la base de datos 
+        // a través del método executeStoredProcedure de la clase BaseController
         bool resultado = executeStoredProcedure("usp_AddMachine", parameters);
 		// Verificar el resultado
         if (resultado) {
@@ -259,7 +266,7 @@ bool MaquinaController::spAgregarMaquina(Maquina^ maquina) {
     return false;
 }
 
-// Método para ejecutar el procedimiento almacenado de modificar máquina
+// Método para ejecutar el procedimiento almacenado de modificar la información de un registro existente
 bool MaquinaController::spModificarMaquina(int id, String^ nombre, String^ rol, String^ turno, String^ ubicacion) {
     Maquina^ maquina = ConsultarMaquinaPorId(id);
 	// Actualizar los valores en el objeto Maquina
@@ -277,7 +284,7 @@ bool MaquinaController::spModificarMaquina(int id, String^ nombre, String^ rol, 
                 gcnew SqlParameter("@State", turno),
                 gcnew SqlParameter("@Location", ubicacion)
         };
-		// Llamar al procedimiento almacenado
+		// Llamar al procedimiento almacenado executeStoredProcedure para actualizar la información del registro en la base de datos
         bool resultado = executeStoredProcedure("usp_UpdateMachine", parameters);
 
         return resultado;
@@ -294,7 +301,7 @@ bool MaquinaController::spEliminarMaquina(int id) {
         array<SqlParameter^>^ parameters = gcnew array<SqlParameter^> {
             gcnew SqlParameter("@MachineId", id)
         };
-		// Llamar al procedimiento almacenado
+		// Llamar al procedimiento almacenado para eliminar la información del registro en la base de datos
         bool resultado = executeStoredProcedure("usp_DeleteMachine", parameters);
 
         return resultado;

@@ -3,14 +3,17 @@
 using namespace SGELProdAutomController;
 using namespace System::IO;
 
+// Constructor de la clase BaseController, se encarga de inicializar el objeto de conexion
 BaseController::BaseController() {
 	this->objConexion = gcnew SqlConnection();
 }
 
+// Metodo para obtener el objeto de conexion
 SqlConnection^ BaseController::getObjConexion() {
 	return this->objConexion;
 }
 
+// Metodo para establecer la conexion a la base de datos
 void BaseController::abrirConexion() {
 	/*Paso 1, establecer la cadena de conexion*/
 	/*LOCAL*/
@@ -27,6 +30,7 @@ void BaseController::abrirConexion() {
 	this->objConexion->Open();
 }
 
+// Metodo para ejecutar sentencias INSERT SQL en la Base de Datos, devuelve el IdPK generado
 int BaseController::insertSql(String^ sSql) {
 	try {
 		abrirConexion();
@@ -42,6 +46,7 @@ int BaseController::insertSql(String^ sSql) {
 	}
 }
 
+// Metodo para ejecutar sentencias UPDATE/DELETE SQL en la Base de Datos, devuelve true si se ejecutó correctamente
 bool BaseController::executeSql(String^ sSql) {
 	try {
 		abrirConexion();
@@ -56,12 +61,17 @@ bool BaseController::executeSql(String^ sSql) {
 	}
 }
 
+// Metodo para cerrar la conexion a la base de datos
 void BaseController::cerrarConexion() {
 	//Paso 3, cerrar la conexion
 	this->objConexion->Close();
 }
 
-// Metodo para ejecutar procedimientos almacenados que devuelven un SqlDataReader
+/******************************************************************************************************************************/
+/******************************************************************************************************************************/
+/******************************************************************************************************************************/
+
+// Metodo para ejecutar procedimientos almacenados (tipo SELECT) que devuelven un SqlDataReader
 SqlDataReader^ BaseController::executeStoredProcedureReader(String^ procedureName, array<SqlParameter^>^ parameters) {
 	//procedureName: Nombre del procedimiento almacenado
 	//parameters: Arreglo de parámetros para el procedimiento almacenado
@@ -86,7 +96,7 @@ SqlDataReader^ BaseController::executeStoredProcedureReader(String^ procedureNam
 	}
 }
 
-// Metodo para ejecutar procedimientos almacenados que no devuelven resultados
+// Metodo para ejecutar procedimientos almacenados (tipo INSERT/UPDATE/DELETE) que no devuelven resultados
 bool BaseController::executeStoredProcedure(String^ procedureName, array<SqlParameter^>^ parameters) {
 	//procedureName: Nombre del procedimiento almacenado
 	//parameters: Arreglo de parámetros para el procedimiento almacenado
@@ -114,6 +124,7 @@ bool BaseController::executeStoredProcedure(String^ procedureName, array<SqlPara
 }
 
 // Metodo para ejecutar procedimientos almacenados que devuelven un valor escalar (int)
+// Por ejemplo, si se requiere que el INSERT retorne el ID generado.
 int BaseController::executeStoredProcedureScalar(String^ procedureName, array<SqlParameter^>^ parameters) {
 	try {
 		abrirConexion();
